@@ -1,0 +1,2 @@
+Elementos <img>/<b> creados por el texto hostil: 0
+Diálogos alert() disparados: 0

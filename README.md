@@ -1,5 +1,7 @@
 # La bandeja de aprobaciones — estado, eventos y la persona que decide
 
+> **Resuelto por Guillermo Willard.** Partes 1 a 4 completas: `npm test` y `npm run test:ai` pasan 61/61. Informe con los fallos de la IA y evidencias: [docs/INFORME-EXTRA.md](docs/INFORME-EXTRA.md).
+
 Repositorio del laboratorio **extra de la semana 10** de Desarrollo de Aplicaciones Empresariales (DAE).
 Es la mitad **humana** de la frontera que viste en la semana 8: un agente de IA propone **planes** (cada uno con
 su `plan_hash`) y una persona los revisa y decide en una pantalla hecha con **componentes de React**. Lo

@@ -1,0 +1,8 @@
+ ✓ src/test/App.test.jsx (2 tests) 47ms
+ ✓ src/test/untrusted.test.jsx (3 tests) 58ms
+ ✓ src/test/Button.test.jsx (12 tests) 88ms
+ ✓ src/test/PlanCard.test.jsx (10 tests) 130ms
+ ✓ src/test/HashConfirm.test.jsx (12 tests) 334ms
+ ✓ src/test/Inbox.test.jsx (22 tests) 465ms
+ Test Files  6 passed (6)
+      Tests  61 passed (61)
