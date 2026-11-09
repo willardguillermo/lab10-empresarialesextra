@@ -3,41 +3,40 @@ import PlanCard from "./PlanCard";
 import { targetLabel, VERDICT_LABELS } from "../lib/plans";
 import { readStoredDecisions, writeStoredDecisions } from "../lib/storage";
 
-// TODO (Inbox) — completa la bandeja por partes. El JSX de abajo ya está escrito: no lo cambies,
-// haz que los datos que usa sean de verdad. Ejecuta `npm test` después de cada parte.
-//
-// Qué recuerda esta pantalla (y SOLO esto se guarda en estado):
-//   · decisions: un objeto { idDelPlan: "approved" | "rejected" }
-//   · query: el texto de la búsqueda
-// Todo lo demás (pendientes, decididos, contadores, filtrados) se CALCULA en cada dibujado.
+// The inbox: what the agent proposed and what the person decided.
+// It remembers only `decisions` ({ planId: "approved" | "rejected" }) and `query`;
+// pending, decided, counters and the filtered list are calculated on every render.
 
 export default function Inbox({ plans }) {
-  // TODO 1 — Estado. Sustituye cada valor de la derecha por una llamada a useState:
-  //   · decisions: empieza con lo que haya guardado (inicialización perezosa: useState(readStoredDecisions),
-  //     pasando la FUNCIÓN, sin llamarla).
-  //   · query: empieza en "".
-  const [decisions, setDecisions] = [{}, () => {}];
-  const [query, setQuery] = ["", () => {}];
+  // State: only what the screen has to remember.
+  // Lazy initialization: React calls readStoredDecisions once, on the first render.
+  const [decisions, setDecisions] = useState(readStoredDecisions);
+  const [query, setQuery] = useState("");
 
-  // TODO 2 — decide(id, verdict): anota la decisión SIN modificar el objeto actual.
-  //   Crea un objeto nuevo con la decisión añadida ({ ...current, [id]: verdict }) y pásalo a setDecisions.
-  //   Usa la forma funcional: setDecisions((current) => ...).
-  function decide(id, verdict) {}
+  // Records a decision without mutating the current object: a new object makes React re-render.
+  function decide(id, verdict) {
+    setDecisions((current) => ({ ...current, [id]: verdict }));
+  }
 
-  // TODO 3 — Derivados. Calcúlalos a partir de plans, decisions y query; NO los guardes en estado.
-  //   · pending: los planes cuyo id NO está en decisions.
-  //   · decided: los planes cuyo id SÍ está en decisions.
-  //   · visible: los pendientes cuyo `op` o cuyo targetLabel(plan.target) contiene `query`
-  //     (sin distinguir mayúsculas ni espacios al borde). Con query vacío, todos los pendientes.
-  const pending = plans;
-  const decided = [];
-  const visible = pending;
+  // Derived data: computed on every render from plans, decisions and query (never stored in state).
+  const pending = plans.filter((plan) => !(plan.id in decisions));
+  const decided = plans.filter((plan) => plan.id in decisions);
+  const needle = query.trim().toLowerCase();
+  const visible = needle
+    ? pending.filter(
+        (plan) =>
+          plan.op.toLowerCase().includes(needle) || targetLabel(plan.target).toLowerCase().includes(needle)
+      )
+    : pending;
 
-  // TODO 4 — clearSearch(): vacía la búsqueda.
-  function clearSearch() {}
+  function clearSearch() {
+    setQuery("");
+  }
 
-  // TODO 5 — Persistencia. Cada vez que cambie `decisions`, guárdalas con writeStoredDecisions(decisions)
-  //   dentro de un useEffect con la dependencia correcta.
+  // Persistence: save every time `decisions` changes.
+  useEffect(() => {
+    writeStoredDecisions(decisions);
+  }, [decisions]);
 
   return (
     <section className="inbox" aria-labelledby="inbox-title">
