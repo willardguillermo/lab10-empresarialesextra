@@ -1,0 +1,14 @@
+   × PlanCard · es controlada por el padre > tras decidir no se marca como decidida por su cuenta: solo avisa 14ms
+   × HashConfirm · la barrera del hash > no se habilita con el hash más texto de sobra 35ms
+   × HashConfirm · la barrera del hash > no se habilita con texto antes del hash 39ms
+   × Inbox · decidir (estado y funciones que suben) > aprobar un plan R1 lo saca de Pendientes y lo pone en Decididos como Aprobado 30ms
+   × Inbox · decidir (estado y funciones que suben) > rechazar un plan lo pone en Decididos como Rechazado 14ms
+   × Inbox · decidir (estado y funciones que suben) > aprobar un plan R2 escribiendo su hash también lo mueve a Decididos 45ms
+   × Inbox · decidir (estado y funciones que suben) > decidir un plan no toca a los demás 15ms
+   × Inbox · decidir (estado y funciones que suben) > acumula las decisiones: la segunda no borra la primera 32ms
+   × Inbox · contadores calculados > los contadores siguen a las decisiones 13ms
+   × Inbox · estados vacíos y botón Limpiar búsqueda > sin coincidencias dice «No hay planes que coincidan» 15ms
+   × Inbox · estados vacíos y botón Limpiar búsqueda > Limpiar búsqueda vacía el campo y devuelve los planes 45ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+ Test Files  3 failed | 3 passed (6)
+      Tests  11 failed | 50 passed (61)
