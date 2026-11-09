@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlanCard from "./PlanCard";
 import { targetLabel, VERDICT_LABELS } from "../lib/plans";
 import { readStoredDecisions, writeStoredDecisions } from "../lib/storage";
@@ -7,11 +7,16 @@ export default function Inbox({ plans }) {
   const [decisions, setDecisions] = useState(() => readStoredDecisions());
   const [query, setQuery] = useState("");
 
+  // FIX (state): the original mutated `decisions` and passed the SAME object to setDecisions,
+  // so React saw no change and did not re-render. Now a new object is created.
   const decide = (id, verdict) => {
-    decisions[id] = verdict;
-    setDecisions(decisions);
-    writeStoredDecisions(decisions);
+    setDecisions((current) => ({ ...current, [id]: verdict }));
   };
+
+  // Persistence moved to an effect that follows `decisions`.
+  useEffect(() => {
+    writeStoredDecisions(decisions);
+  }, [decisions]);
 
   const clearSearch = () => setQuery("");
 
@@ -47,7 +52,8 @@ export default function Inbox({ plans }) {
         ) : query.trim() !== "" ? (
           <div className="empty">
             <p>No hay planes que coincidan</p>
-            <button type="button" onClick={clearSearch()}>
+            {/* FIX (events): onClick={clearSearch()} CALLED the function while rendering; pass it instead. */}
+            <button type="button" onClick={clearSearch}>
               Limpiar búsqueda
             </button>
           </div>
